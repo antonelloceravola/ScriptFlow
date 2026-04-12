@@ -279,7 +279,7 @@ function getItemPrefix(type, item) {
   let prefix = "";
   const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type];
 
-  if( headingPrefix && !item.text.toLowerCase().trim().startsWith(headingPrefix) ) {
+  if( headingPrefix && !item.text.toLowerCase().trim().startsWith(headingPrefix.toLowerCase()) ) {
     switch (type) {
       case "text": break;
       case "chapter": 
@@ -587,12 +587,14 @@ async function parseCommandLineParameters(cliArgs) {
       const value = cliArgs[i + 1];
       FLAGS.StartAfterLine = convertFlagValue(value, FLAGS.StartAfterLine, "StartAfterLine");
       i++; // skip next
+      continue;
     }
 
     if (arg === "--audioFormat" && cliArgs[i + 1]) {
       const value = cliArgs[i + 1];
       FLAGS.FinalAudioFormat = convertFlagValue(value, FLAGS.FinalAudioFormat, "FinalAudioFormat");
       i++; // skip next
+      continue;
     }
 
     if (arg === "--doMerge") {
@@ -603,10 +605,6 @@ async function parseCommandLineParameters(cliArgs) {
         i++; // skip next
       }
       FLAGS.DoMergeOnly = true;
-    }
-
-    if (arg.startsWith("--")) {
-      console.log(`[CLI PARAM IGNORED] unknown option "${arg}"`);
       continue;
     }
 
