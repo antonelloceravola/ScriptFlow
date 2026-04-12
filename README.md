@@ -1,3 +1,10 @@
+<p align="center">
+  <img src="./ScriptFlowProjectBanner.png" alt="Narrascript Banner" width="100%">
+</p>
+
+<h1 align="center">🎧 ScriptFlow</h1>
+<p align="center"><i>The script langugae for audio narrations</i></p>
+
 # 🎧 ScriptFlow
 
 **ScriptFlow** is a lightweight scripting language and toolchain for generating audiobooks from plain text.
