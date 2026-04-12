@@ -1,3 +1,22 @@
+// This example shows how to do a 2 step process.
+// By calling:
+//
+//    ScriptFlow.sh tutorial/2StepProcessDoc.txt
+//
+// the audi files and the parts will be generated and 
+// the process will stop because of the SkipMerging: true
+
+// After you can inspect all the parts and in case
+// modify/add/remove some of them.
+// Then to execute the merging process just run:
+//
+//    ScriptFlow.sh [--audioFormat acx] --doMerge
+//
+// This will then make only the merging process.  
+
+// GenerateChapterAudioFiles: true
+// FinalAudioFormat: acx
+// SkipMerging: true
 
 
 *Chapter One

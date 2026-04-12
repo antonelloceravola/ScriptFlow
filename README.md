@@ -132,8 +132,19 @@ ScriptFlow.sh yourFile.txt [--start <number|"text">]
 
    * parse the structure
    * apply parameters
-   * generate audio chunks
+   * generate audio chunks into an output directory (Parameter OutputDir)
    * merge them into final chapter files
+
+NOTE: if you need to pause before the merging,
+just set the parameter SkipMerging to true.
+All audio chunks will be left in the output directory.
+To juse execute the merging run:
+
+```bash
+ScriptFlow.sh [--audioFormat acx] --doMerge [outputDir]
+```
+With this setep you might add/insert or substitue audio
+chunks that will be then merged into the chapter files
 
 ---
 

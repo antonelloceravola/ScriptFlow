@@ -187,6 +187,67 @@ async function mergeAudioFiles(partFiles, outputFile) {
   try { fs.unlinkSync(listFile); } catch (_) {}
 }
 
+// This function is used in case you call
+// the script with --doMerge option to 
+// merge existing part files
+async function mergeExistingParts() {
+  const partsDir = path.join(FLAGS.OutputDir, "_parts");
+
+  if (!fs.existsSync(partsDir)) {
+    console.error("No _parts directory found.");
+    return;
+  }
+
+  const files = fs.readdirSync(partsDir)
+    .filter(f => f.endsWith(".aiff"))
+    .sort();
+
+  if (files.length === 0) {
+    console.error("No part files found.");
+    return;
+  }
+
+  // Group by chapter prefix (e.g. "01-title")
+  const groups = {};
+
+  for (const file of files) {
+    const match = file.match(/^(.*)\.part\d+\.aiff$/);
+    if (!match) continue;
+
+    const key = match[1];
+
+    if (!groups[key]) {
+      groups[key] = [];
+    }
+
+    groups[key].push(path.join(partsDir, file));
+  }
+
+  for (const key of Object.keys(groups)) {
+    const partFiles = groups[key].sort();
+
+    const outputFile = path.join(
+      FLAGS.OutputDir,
+      `${key}.${getFinalAudioExtension()}`
+    );
+
+    console.log(`[MERGE ONLY] ${key} -> ${outputFile}`);
+
+    try {
+      await mergeAudioFiles(partFiles, outputFile);
+
+      if (!FLAGS.KeepPartFiles) {
+        for (const f of partFiles) {
+          try { fs.unlinkSync(f); } catch (_) {}
+        }
+      }
+
+    } catch (err) {
+      console.error(`Error merging ${key}: ${err.message}`);
+    }
+  }
+}
+
 async function flushChapterBuffer(chapterBuffer, chapterTitle, chapterIndex) {
   if (chapterBuffer.length === 0) {
     return;
@@ -482,19 +543,21 @@ async function finalizeCurrentChapter() {
       const finalOutputFile = buildChapterFilePath(chapterIndex, currentChapterTitle);
       console.log(`[MERGE CHAPTER] ${currentChapterTitle} -> ${finalOutputFile}`);
 
-      try {
-        await mergeAudioFiles(chapterPartFiles, finalOutputFile);
+      if(!FLAGS.SkipMerging) {
+        try {
+          await mergeAudioFiles(chapterPartFiles, finalOutputFile);
 
-        if( !FLAGS.KeepPartFiles ) {
-          for (const file of chapterPartFiles) {
-            try { fs.unlinkSync(file); } catch (_) {}
+          if( !FLAGS.KeepPartFiles ) {
+            for (const file of chapterPartFiles) {
+              try { fs.unlinkSync(file); } catch (_) {}
+            }
           }
+        } catch (err) {
+          console.error(
+            `Merge error for chapter "${currentChapterTitle}": ${err.message}`
+          );
+          console.error(`Keeping part files in ${path.join(FLAGS.OutputDir, "_parts")}`);
         }
-      } catch (err) {
-        console.error(
-          `Merge error for chapter "${currentChapterTitle}": ${err.message}`
-        );
-        console.error(`Keeping part files in ${path.join(FLAGS.OutputDir, "_parts")}`);
       }
     }
 
@@ -510,7 +573,7 @@ async function finalizeCurrentChapter() {
   }
 }
 
-function parseStartLineParameter(cliArgs) {
+function parseCommandLineParameters(cliArgs) {
   for (let i = 0; i < cliArgs.length; i++) {
     const arg = cliArgs[i];
 
@@ -519,6 +582,32 @@ function parseStartLineParameter(cliArgs) {
       FLAGS.StartAfterLine = convertFlagValue(value, FLAGS.StartAfterLine, "StartAfterLine");
       i++; // skip next
     }
+
+    if (arg === "--audioFormat" && cliArgs[i + 1]) {
+      const value = cliArgs[i + 1];
+      FLAGS.FinalAudioFormat = convertFlagValue(value, FLAGS.FinalAudioFormat, "FinalAudioFormat");
+      i++; // skip next
+    }
+
+    if (arg === "--doMerge") {
+      if(cliArgs[i + 1]) {
+        // Get the output directory for merging
+        const value = cliArgs[i + 1];
+        FLAGS.OutputDir = convertFlagValue(value, FLAGS.OutputDir, "OutputDir");
+        i++; // skip next
+      }
+      FLAGS.DoMergeOnly = true;
+    }
+
+    if (arg.startsWith("--")) {
+      console.log(`[CLI PARAM IGNORED] unknown option "${arg}"`);
+      continue;
+    }
+
+    if (!FLAGS.InputFile) {
+      FLAGS.InputFile = arg;
+      continue;
+    }
   }
 }
 
@@ -526,9 +615,9 @@ function parseStartLineParameter(cliArgs) {
 // MAIN EXECUTION
 // =====================================================
 async function main() {
-  const inputFile = process.argv[2];
-  const cliArgs = process.argv.slice(3);
-  parseStartLineParameter(cliArgs);
+  //const inputFile = process.argv[2];
+  const cliArgs = process.argv.slice(2);
+  parseCommandLineParameters(cliArgs);
 
   let seenFirstChapter = false;
   let started = FLAGS.StartAfterLine === 0;
@@ -544,14 +633,21 @@ async function main() {
   // Pending pause prefix initialization
   pendingPausePrefix = "";
 
+  if (FLAGS.DoMergeOnly) {
+    console.log("--- MERGE ONLY MODE ---");
+    await mergeExistingParts();
+    console.log("Merge completed.");
+    return;
+  }
+
   console.log(`[VOICE=${FLAGS.SayVoice} RATE=${FLAGS.SayRate}]\n`);
 
-  if (!inputFile) {
+  if (!FLAGS.InputFile) {
     console.error("Usage: node parseBookCli.js <input-file>");
     process.exit(1);
   }
 
-  let fullPath = path.resolve(inputFile);
+  let fullPath = path.resolve(FLAGS.InputFile);
 
   if (!fs.existsSync(fullPath)) {
     console.error(`Error: file not found: ${fullPath}`);

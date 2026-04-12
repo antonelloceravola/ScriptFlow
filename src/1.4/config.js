@@ -33,8 +33,11 @@
 
     // Audio file generation options
     GenerateChapterAudioFiles: false,
+    InputFile: "",
     OutputDir: "./audio",
     KeepPartFiles: false,
+    SkipMerging: false,
+    DoMergeOnly: false,  // Use this from command line only
     ShowAudioMergingLogs: false,
 
     // Speech options
