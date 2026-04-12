@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# Run the Node.js script
-node ./src/1.4/parseBookCli.js $1
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+node "$SCRIPT_DIR/src/1.4/parseBookCli.js" "$@"
