@@ -79,13 +79,13 @@
       "Narrator":   { voice: "Lee",     rate: "Neutral" },
       "Boy":        { voice: "Nathan",  rate: "Neutral" },
       "Girl":       { voice: "Joelle",  rate: "Neutral" },
-      "Serious":    { voice: "Nathan",  rate: "Neutral" },
+      "Serious":    { voice: "Daniel",  rate: "Neutral" },
     },
     En1: {
       "Narrator":   { voice: "Lee",     rate: "Neutral" },
       "Boy":        { voice: "Nathan",  rate: "Neutral" },
       "Girl":       { voice: "Joelle",  rate: "Neutral" },
-      "Serious":    { voice: "Nathan",  rate: "Neutral" },
+      "Serious":    { voice: "Jamie",   rate: "Neutral" },
     },
     En2: {
       "Narrator":   { voice: "Zoe",     rate: "Neutral" },

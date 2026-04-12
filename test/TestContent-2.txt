@@ -4,7 +4,7 @@
 
 This is the first line of text.
 This is the second line of text.
-
+// Narrator: Serious
 This is the third line of text.
 
 -Section A
@@ -18,7 +18,7 @@ And more section text.
 :Subsection A1
 
 More detailed text here.
-
+// Narrator: Narrator
 *Chapter Two
 
 This is the first line of text.
