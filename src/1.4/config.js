@@ -72,6 +72,12 @@
   // here if needed.
   // =====================================================
   const NarratorPresets = {
+    En0: {
+      "Narrator":   { voice: "Lee",     rate: "Neutral" },
+      "Boy":        { voice: "Nathan",  rate: "Neutral" },
+      "Girl":       { voice: "Joelle",  rate: "Neutral" },
+      "Serious":    { voice: "Kate",    rate: "Neutral" },
+    },
     En1: {
       "Narrator":   { voice: "Lee",     rate: "Neutral" },
       "Boy":        { voice: "Nathan",  rate: "Neutral" },
@@ -96,6 +102,11 @@
   // HEADING PREFIXES BY LANGUAGE
   // =====================================================
   const HeadingPrefixes = {
+    En0: {
+      chapter:    "",
+      section:    "",
+      subsection: ""
+    },
     En1: {
       chapter:    "Chapter",
       section:    "Section",

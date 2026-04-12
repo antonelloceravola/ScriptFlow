@@ -215,8 +215,9 @@ async function flushChapterBuffer(chapterBuffer, chapterTitle, chapterIndex) {
 
 function getItemPrefix(type, item) {
   let prefix = "";
+  const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type];
 
-  if( !item.text.toLowerCase().trim().startsWith(type) ) {
+  if( headingPrefix && !item.text.toLowerCase().trim().startsWith(headingPrefix) ) {
     switch (type) {
       case "text": break;
       case "chapter": 
