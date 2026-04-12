@@ -125,7 +125,7 @@ Then everything started moving fast.
 2. Run the parser:
 
 ```bash
-ScriptFlow.sh yourFile.txt
+ScriptFlow.sh yourFile.txt [--start <number|"text">]
 ```
 
 3. The system will:
