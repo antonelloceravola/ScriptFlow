@@ -90,6 +90,12 @@
       "Girl":       { voice: "Ava",     rate: "Neutral" },
       "Serious":    { voice: "Kate",    rate: "Neutral" },
     },
+    It0: {
+      "Narrator":   { voice: "Emma",    rate: "Neutral" },
+      "Boy":        { voice: "Luca",    rate: "Neutral" },
+      "Girl":       { voice: "Paola",   rate: "Neutral" },
+      "Serious":    { voice: "Alice",   rate: "Neutral" },
+    },
     It1: {
       "Narrator":   { voice: "Emma",    rate: "Neutral" },
       "Boy":        { voice: "Luca",    rate: "Neutral" },
@@ -116,6 +122,11 @@
       chapter:    "Chapter",
       section:    "Section",
       subsection: "Subsection"
+    },
+    It0: {
+      chapter:    "",
+      section:    "",
+      subsection: ""
     },
     It1: {
       chapter:    "Capitolo",
