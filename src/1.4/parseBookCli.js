@@ -224,7 +224,7 @@ function getItemPrefix(type, item) {
       case "section":
       case "subsection":
         const pauseTag = getPauseTag(FLAGS.ShortPause);
-        prefix = ( HeadingPrefixes[FLAGS.Language]?.[type] || type )+ pauseTag;
+        prefix = ( headingPrefix || type )+ pauseTag;
         break;
     }
   }
