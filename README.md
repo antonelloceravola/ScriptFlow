@@ -143,8 +143,15 @@ To juse execute the merging run:
 ```bash
 ScriptFlow.sh [--audioFormat acx] --doMerge [outputDir]
 ```
+
 With this setep you might add/insert or substitue audio
 chunks that will be then merged into the chapter files
+
+HELPER: if you want to list all available voices, just run:
+
+```bash
+ScriptFlow.sh --listVoices
+```
 
 ---
 
