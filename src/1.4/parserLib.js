@@ -94,6 +94,7 @@
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
+      const lineNumber = i + 1;
 
       // Comments MUST be ignored as first pre-processing step
       if (isComment(line)) {
@@ -106,7 +107,7 @@
             value: param.value,
             raw: line,
             text: line,
-            lineNumber: i + 1
+            lineNumber
           });
         }
 
@@ -133,7 +134,7 @@
           type: "chapter",
           raw: line,
           text: getTitleText(line),
-          lineNumber: i + 1,
+          lineNumber
         });
         continue;
       }
@@ -148,7 +149,7 @@
           type: "section",
           raw: line,
           text: getTitleText(line),
-          lineNumber: i + 1,
+          lineNumber
         });
         continue;
       }
@@ -163,7 +164,7 @@
           type: "subsection",
           raw: line,
           text: getTitleText(line),
-          lineNumber: i + 1,
+          lineNumber
         });
         continue;
       }
@@ -179,7 +180,7 @@
           type: "text",
           raw: line,
           text: line,
-          lineNumber: i + 1,
+          lineNumber
         });
       }
     }
