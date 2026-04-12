@@ -1,0 +1,333 @@
+*Language Design Specification
+
+-Overview
+
+This document defines the structure and behavior
+of the audiobook scripting language.
+
+The language is designed to be:
+
+simple,
+readable,
+and directly executable.
+
+It combines plain text
+with lightweight control directives.
+
+-Syntax
+
+The language is line-based.
+
+Each line belongs to one of the following categories:
+
+chapter
+section
+subsection
+text
+comment
+parameter
+
+The meaning of a line depends on its prefix.
+
+:Structure Markers
+
+A chapter is defined by a line starting with:
+
+*
+
+A section is defined by a line starting with:
+
+-
+
+A subsection is defined by a line starting with:
+
+:
+
+These markers must appear on lines
+followed, without spaces, with the text of the chapter/section/subsection
+separated by empty lines
+for correct detection.
+
+Examples:
+
+*Chapter Title
+
+-Section Title
+
+:Subsection Title
+
+Text Content
+
+Any line that does not match a marker
+is treated as text.
+
+Text is the content that will be narrated.
+
+Empty lines may be used
+to improve readability
+and may influence paragraph grouping.
+
+:Comments
+
+A comment is a line starting with and followed by a space:
+
+// 
+
+Comments are ignored by default.
+
+They are not spoken,
+and not treated as text.
+
+However,
+comments may also define parameters.
+
+:Parameters
+
+A parameter is a comment with the form (NOTE: the space after // is necessary):
+
+// name: value
+
+If the name matches a known option,
+it modifies the system behavior.
+
+Parameters are applied immediately,
+and affect all following content.
+
+To disable a parameter setting, just remove the space after //
+
+Examples:
+
+// Mode: Calm
+// SayRate: 150
+// Language: En1
+
+Unknown parameters are ignored.
+
+:Execution Model
+
+The system processes the text sequentially,
+from top to bottom.
+
+At each step:
+
+1. A line is parsed into an item.
+2. Parameters are applied immediately.
+3. Content is processed using current settings.
+
+There is no look-ahead.
+
+All behavior is forward-driven.
+
+:State
+
+The system maintains a mutable state,
+including:
+
+current voice
+current rate
+current mode
+current language context
+execution flags
+
+When a parameter is encountered,
+the state is updated.
+
+Subsequent lines use the updated state.
+
+:Modes
+
+Modes are high-level abstractions.
+
+They define a set of narration properties,
+such as voice and speaking rate.
+
+Syntax:
+
+// Mode: <name>
+
+Modes are resolved based on the active context.
+
+Example:
+
+// Language: En1
+// Mode: Calm
+
+Each language context defines its own mode presets.
+
+Modes may override previous voice and rate settings.
+
+Explicit parameters applied after a mode
+override the mode.
+
+:Language
+
+Language contexts define environment-specific settings.
+
+Syntax:
+
+// Language: <name>
+
+Examples:
+
+// Language: En1
+// Language: It1
+
+A context typically defines:
+
+default voice
+default rate
+mode presets
+
+Changing context updates the current state.
+
+:Speech Parameters
+
+The following parameters directly affect speech:
+
+SayVoice
+SayRate
+Mode
+Language
+Pause
+
+When one of these parameters changes,
+the system may split the current audio chunk.
+
+:Text Grouping
+
+Text lines may be grouped into paragraphs.
+
+Controlled by:
+
+// GroupConsecutiveTextIntoParagraphs: true
+
+When enabled,
+consecutive text lines are merged
+before processing.
+
+When disabled,
+each line is processed individually.
+
+:Chapter Accumulation
+
+Content may be accumulated at chapter level.
+
+Controlled by:
+
+// GroupFullChapter: true
+
+When enabled,
+content is buffered until the end of the chapter.
+
+When disabled,
+content may be processed incrementally.
+
+:Audio Generation
+
+Audio generation is controlled by:
+
+// GenerateChapterAudioFiles: true
+
+When enabled:
+
+1. Text is split into chunks.
+2. Each chunk is converted into a temporary audio file.
+3. Temporary files are merged into a final chapter file.
+
+Chunk boundaries occur when:
+
+speech parameters change
+chapter boundaries are reached
+
+:Output Format
+
+The final output format is configurable.
+
+Syntax:
+
+// FinalAudioFormat: <format>
+
+Example:
+
+// FinalAudioFormat: acx
+
+The system may use intermediate formats internally,
+but the final output matches the requested format.
+
+:Execution Control
+
+Execution may be controlled dynamically.
+
+Syntax:
+
+// StartAfterLine: <value>
+
+If value is numeric:
+execution starts when lineNumber >= value
+
+If value is text:
+execution starts when a line contains the text
+
+Execution is forward-only.
+
+:Determinism
+
+Given the same input text and parameters,
+the system produces the same output.
+
+Behavior depends only on:
+
+input text
+parameter sequence
+initial flags
+
+There is no randomness.
+
+:Extensibility
+
+The language is extensible.
+
+New parameters can be introduced
+without changing the core syntax.
+
+The parser remains stable,
+while behavior evolves through parameters.
+
+:Design Principles
+
+The language follows these principles:
+
+Plain text first
+
+The text remains readable without execution.
+
+Minimal syntax
+
+Only a few symbols are required.
+
+Local control
+
+Behavior is defined close to the content.
+
+Sequential execution
+
+No complex control flow.
+
+Composability
+
+Features can be combined freely.
+
+:Summary
+
+The language is a simple,
+line-based scripting system
+for controlling audiobook generation.
+
+It allows:
+
+structured text
+dynamic narration control
+audio generation
+execution control
+
+All within a single document.

@@ -1,0 +1,37 @@
+// This example demonstrates switching between languages using SayContext.
+
+// GenerateChapterAudioFiles: false
+// FinalAudioFormat: acx
+
+*Language Switching Demo
+
+// SayContext: En1
+// Mode: Neutral
+
+We start in English. This section should be spoken using an English voice. The tone is neutral and easy to follow.
+
+-Transition to Italian
+
+// Language: It1
+// Mode: Calm
+
+Ora passiamo all’italiano.
+
+Questa parte dovrebbe essere letta con una voce italiana. Il ritmo è più calmo, per rendere il contenuto più riflessivo.
+
+:Breve spiegazione
+
+Questo dimostra che il contesto può cambiare durante il testo.
+
+Il sistema applica automaticamente la nuova lingua e voce.
+
+// Language: En1
+// Mode: Reflective
+
+*Back to English
+
+Now we switch back to English. The voice should return to an English speaker. The tone is slightly more reflective.
+
+:Final Note
+
+You can mix languages freely. Each context switch applies immediately, and affects everything that follows.

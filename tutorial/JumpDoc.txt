@@ -1,0 +1,102 @@
+// This file tests dynamic StartAfterLine behavior
+
+// SpeakText: true
+
+*StartAfterLine Test
+
+// Mode: Neutral
+
+This is the beginning of the file. You should hear this normally.
+
+-Section One
+
+This is still before any jump. Everything should be processed.
+
+// StartAfterLine: 62
+
+This line should NOT be heard.
+
+This is still before line fifty,
+so it should be skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+This is also skipped.
+
+// We should resume around here (line ~50)
+
+This is the first line that should be heard after the numeric jump.
+
+-After Numeric Jump
+
+Now the system has resumed. Everything from here should be processed normally.
+
+:Checkpoint One
+
+This confirms that numeric jump worked.
+
+// StartAfterLine: Target Section
+
+This line should be skipped, because we now jump by text.
+
+This is also skipped. 
+This is also skipped.
+
+-Intermediate Section
+
+This section should NOT be heard.
+
+This is also skipped.
+
+:Still Skipped
+
+Nothing here should be processed.
+
+// This is the target text
+
+-Target Section
+
+This section name matches the StartAfterLine text. Execution should resume here. This line should be heard. This confirms that text-based jumping works.
+
+:Final Check
+
+If you hear this,
+both numeric and string-based jumps worked correctly.
+
+*Second Chapter
+
+This chapter should also be processed normally. Everything should continue as expected.

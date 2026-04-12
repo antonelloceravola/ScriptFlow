@@ -1,0 +1,81 @@
+// This document demonstrates different narration modes.
+// Each section uses a different mode so you can clearly hear the differences.
+
+// GroupFullChapter: false
+// GroupConsecutiveTextIntoParagraphs: false
+// SpeakText: true
+
+*Mode Demonstration
+
+// Mode: Slow
+
+This is the slow mode. The voice should feel very deliberate. Each word should have space.
+This is useful for emphasis, or for important ideas.
+
+// Mode: VerySlow
+
+This is the very slow mode. The voice should feel very deliberate. Each word should have space.
+This is useful for even more emphasis, or for really important ideas.
+
+// Mode: Calm
+
+- Calm Mode
+
+Now we switch to calm mode. The speech should feel relaxed, steady, and comfortable to follow.
+This works well for reflective passages.
+
+// Mode: Reflective
+
+- Reflective Mode
+
+This mode is slightly faster than calm, but still thoughtful. It should feel like someone thinking aloud, carefully choosing each word.
+
+// Mode: Neutral
+
+- Neutral Mode
+
+This is the neutral mode. It should sound like a normal speaking pace.
+This is useful for general narration, without strong emotional tone.
+
+// Mode: Fast
+
+- Fast Mode
+
+Now the speed increases. The voice should feel more energetic. Sentences move faster, and the rhythm becomes more dynamic.
+
+// Mode: Intense
+
+- Intense Mode
+
+This is the intense mode. The pace should now be clearly fast. It may feel urgent, or slightly overwhelming.
+This is useful for tension or excitement.
+
+// Mode: Gentle
+
+- Gentle Mode
+
+Now the voice changes.
+
+This should sound softer, and more delicate.
+It is useful for calm, emotional, or sensitive content.
+
+// Mode: Neutral
+
+:Final Comparison
+
+You have now heard some modes. You have available:
+
+VerySlow.
+Slow.
+Calm.
+Reflective.
+Neutral.
+Fast.
+VeryFast.
+Intense.
+Gentle.
+
+You can now decide
+which modes best fit your book.
+
+Bye

@@ -1,0 +1,78 @@
+// This document shows how to test and debug the system.
+
+*Testing and Debugging
+
+// Mode: Neutral
+
+When something does not work, the first step is to reduce complexity. 
+// Pause: 2000
+Test small parts.
+Listen carefully. Observe the logs.
+
+-Quick Checks
+
+Enable simple logging. Check that chapters, sections, and text are detected correctly.
+If the structure is wrong, everything else will be wrong too.
+
+:Minimal Test
+
+Write a very short example.
+
+One chapter.
+
+One section.
+
+One or two lines of text.
+
+Verify that it works before scaling up.
+
+-Testing Modes
+
+// Mode: Calm
+
+Test one mode at a time. Then switch to another mode. Listen for a clear difference.
+If you cannot hear the change, adjust the rate values.
+
+:Example
+
+// Mode: Slow
+This should sound slow.
+
+// Mode: Intense
+This should sound fast.
+
+-Testing Language
+
+Switch context in a small example.
+
+// SayContext: En1
+This is English.
+
+// SayContext: It1
+Questo è italiano.
+
+If the voice does not change, check the available voices on your system.
+
+-Testing Audio Generation
+
+// GenerateChapterAudioFiles: true
+
+Enable file generation. Check that part files are created. Then verify that the final chapter file exists. If merging fails, inspect the temporary files.
+
+-Using StartAfterLine
+
+Use this option to skip parts of the text.
+
+// NOTE: the next option is disabled by removing the space between // and Generate...
+//StartAfterLine: 100
+
+Or jump to a specific section:
+
+// NOTE: the next option is disabled by removing the space between // and Generate...
+//StartAfterLine: Target Section
+
+This is useful to re-run only a portion of the document.
+
+-Final Advice
+
+Keep tests small. Change one parameter at a time. If something breaks, go back to a simple example, and rebuild step by step.

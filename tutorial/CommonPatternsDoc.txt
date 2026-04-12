@@ -1,0 +1,167 @@
+// This document shows common patterns you can reuse.
+
+// Each example is small and practical.
+
+*Common Patterns
+
+// Mode: Neutral
+
+This chapter shows how to combine features to achieve useful effects.
+
+-Emphasizing a Sentence
+
+// Mode: Calm
+
+This is normal narration.
+
+
+// Mode: VerySlow
+
+This sentence is important. Take your time to understand it.
+
+
+// Mode: Neutral
+
+And now we continue as usual.
+
+:Idea
+
+Use a slower mode to highlight key ideas.
+
+-Switching Language for a Quote
+
+// Language: En1
+
+He said:
+
+
+// Language: It1
+
+“La semplicità è la forma più sofisticata.”
+
+
+// Language: En1
+
+Then he continued in English.
+
+:Idea
+
+Use language switching to include authentic quotes.
+
+-Dialogue with Different Voices
+
+// Mode: Neutral
+
+The conversation started.
+
+
+// SayVoice: Samantha
+
+“Are you sure this will work?”
+
+
+// SayVoice: Zoe
+
+“Yes, I think it will.”
+
+
+// SayVoice: Samantha
+
+“I’m not convinced.”
+
+
+// SayVoice: Zoe
+
+“Let’s try anyway.”
+
+:Idea
+
+Change voice per line to simulate dialogue.
+
+-Speeding Up a Sequence
+
+// Mode: Neutral
+
+Everything was calm at first.
+
+
+// Mode: Fast
+
+Then things started moving quickly. Steps were taken. Decisions were made. Everything accelerated.
+
+
+// Mode: Intense
+
+Too fast to follow. Too fast to think. Too fast to stop.
+
+
+// Mode: Neutral
+
+And then it slowed down again.
+
+:Idea
+
+Increase speed to create tension or urgency.
+
+-Soft Ending
+
+// Mode: Reflective
+
+The story is coming to an end.
+
+
+// Mode: Gentle
+
+Everything becomes quieter.
+Slower.
+Softer.
+
+
+// Mode: VerySlow
+
+And finally, it stops.
+
+:Idea
+
+Use gentle and slow modes for endings.
+
+-Testing a Small Section
+
+// StartAfterLine: Dialogue
+
+This part will only run when testing from the dialogue section.
+
+:Idea
+
+Use StartAfterLine to isolate parts of the text.
+
+-Combining Everything
+
+// Language: En1
+// Mode: Calm
+
+The system is flexible.
+
+
+// Language: It1
+// Mode: Reflective
+
+Puoi cambiare lingua, tono, e ritmo.
+
+Oppure inserire una pausa di due secondi con un commento // Pause: 2000
+Proviamo, conta due secondi
+// Pause: 2000
+Due secondi passati ora
+
+// Language: En1
+// Mode: Intense
+
+All within the same chapter.
+
+:Idea
+
+Combine features gradually. Do not change everything at once.
+
+-Final Note
+
+These are just examples. You can mix and adapt them. The goal is simple: Make the narration match the meaning.

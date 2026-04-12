@@ -1,0 +1,687 @@
+// This document is both a guide and a working example.
+// It is designed to be read and also listened to as an audiobook.
+
+// The system is also dynamic.
+// Parameters can change during execution,
+// and they affect how the audio is generated in real time.
+
+// Quick recap of what this system can do:
+// 
+// 📘 Structured text → chapters / sections / subsections
+// 🎛 Runtime parameters via comments
+// 🎭 Modes (semantic control of narration)
+// 🌍 Multi-language switching
+// ⏭ Dynamic execution jumps (StartAfterLine)
+// 🧱 Paragraph grouping
+// 🎧 Chunked audio generation
+// 🔗 Merging into final chapter files
+// 🎯 ACX-ready output format
+//
+// it’s a full feature pipeline.
+
+// Quick DSL structure:
+// *Chapter 		-> A star symbol defines a chapter.
+// -Section		-> A dash defines a section.
+// :Subsection		-> A colon defines a subsection.
+// Text 		-> just text
+// [Empty line] 	-> A pause between text
+// Mode: Calm
+// Pause: 800
+// StartAfterLine: ...
+
+// Here some settings
+// GroupFullChapter: false
+// GroupConsecutiveTextIntoParagraphs: false
+// SpeakText: true
+
+*Title: The Ultimate Audio Book Generator
+
+-Lets understand how it works
+
+We are going here to explain how the text for this audio book generator can be structured.
+
+*Understanding the Structure
+
+// Mode: Neutral
+
+This is not just sample text.
+It is also a guided explanation of how the system works.
+
+You can read it like documentation.
+Or you can listen to it as an audiobook.
+
+In both cases, the structure remains the same.
+
+-Why Structure Matters
+
+Structure helps the system understand where it is in the book.
+
+It separates chapters from sections,
+and sections from smaller parts.
+
+This separation is important,
+because it determines how the audiobook is generated.
+
+:Markers
+
+Markers are intentionally simple.
+
+A star symbol defines a chapter.
+A dash defines a section.
+A colon defines a subsection.
+
+There is no complex syntax.
+
+Everything else is treated as normal text,
+and becomes part of the narration.
+
+// This is a comment. It will not be spoken.
+
+// Mode: Calm
+
+:Text Blocks
+
+Text is processed in blocks.
+
+Even if you leave empty lines between sentences,
+the system can group them together into paragraphs.
+
+This grouping can also change dynamically during execution.This allows the narration to feel continuous and natural. Instead of breaking the flow,
+it preserves it.
+
+-Comments and Parameters
+
+Comments begin with two slashes, followed by a space.
+
+They are ignored by default. However, if a comment contains a parameter,
+it can modify how the system behaves.
+
+The syntax is simple:
+
+name: value
+
+For example:
+
+// SayVoice: Samantha
+// SayRate: 155
+
+From that point onward,
+the voice and speaking speed will change.
+
+This allows you to control the narration dynamically,
+directly from the text.
+
+:Modes
+
+Instead of manually setting voice and rate each time,
+you can use predefined modes.
+
+For example:
+
+// Mode: Calm
+// Mode: Intense
+
+A mode automatically sets multiple parameters,
+such as voice and speaking rate.
+
+This makes the text easier to write,
+and easier to maintain.
+
+:Dynamic Behavior
+
+This dynamic behavior is very powerful.
+
+It means that one part of the book
+can feel calm and reflective,
+
+while another part
+can feel faster or more energetic.
+
+All of this can be controlled
+without changing the code,
+just by editing the text.
+
+// Mode: Intense
+
+Notice how the tone now becomes faster and more energetic.
+
+The system reacts immediately to the change.
+
+// A new chapter starts here.
+
+*Comment Options and Modes
+
+-Overview
+
+This chapter explains all the options that can be set through comments in the text.
+
+A comment is a line that starts with two slashes followed by a space.
+
+For example:
+
+// SayRate: 150
+
+A normal comment is ignored by the parser.
+
+A comment becomes a command only if it matches this form:
+
+name: value
+
+If the name matches a supported option,
+the system updates its behavior from that point onward.
+
+This means that comment options are dynamic.
+
+They do not affect the text before them.
+They only affect the text that comes after them.
+
+:General Syntax
+
+The general syntax is:
+
+// OptionName: value
+
+Examples:
+
+// SayVoice: Zoe
+// SayRate: 165
+// Mode: Calm
+// GroupFullChapter: true
+
+If the option name is valid,
+the corresponding flag is updated.
+
+If the option name is unknown,
+the line is ignored as a parameter,
+although it can still remain useful as a human comment.
+
+-Comments Without Parameters
+
+Not every comment needs to be a command.
+
+For example:
+
+// This section should feel more emotional
+// Maybe test a slower speed here
+
+These lines are simply notes for the author.
+
+They are not spoken,
+they are not logged as content,
+and they do not change the behavior of the tool.
+
+-Available Comment Options
+
+The following options can be set through comments.
+
+:Mode
+
+Mode is a high-level option.
+
+Instead of manually setting voice and rate,
+you can choose a predefined narration style.
+
+Syntax:
+
+// Mode: Calm
+
+The exact effect depends on the active context,
+such as English or Italian.
+
+Modes are useful because they make the text easier to write and maintain.
+
+Instead of repeating low-level settings,
+you can express the desired tone directly.
+
+Examples:
+
+// Mode: VerySlow
+// Mode: Slow
+// Mode: Calm
+// Mode: Neutral
+// Mode: Fast
+// Mode: VeryFast
+// Mode: Intense
+// Mode: Gentle
+
+A mode usually changes:
+the voice,
+the speaking rate,
+and potentially other narration settings if they are added in the future.
+
+If a mode is unknown,
+it is ignored.
+
+:Language
+
+Language selects a narration context.
+
+It is typically used to choose a language family or preset group.
+
+Syntax:
+
+// Language: En1
+// Language: It1
+
+A context can define default values such as:
+voice,
+rate,
+and mode presets.
+
+For example,
+the English context may use one set of voices,
+while the Italian context may use another.
+
+This option is useful when the same tool is used for books in different languages.
+
+// This example demonstrates switching between languages using Language.
+*Language Switching Demo
+
+// Language: En1
+// Mode: Neutral
+
+We start in English.
+
+This section should be spoken using an English voice.
+
+The tone is neutral and easy to follow.
+
+-Transition to Italian
+
+// Language: It1
+// Mode: Calm
+
+Ora passiamo all’italiano.
+
+Questa parte dovrebbe essere letta con una voce italiana.
+
+Il ritmo è più calmo,
+per rendere il contenuto più riflessivo.
+
+:Breve spiegazione
+
+Questo dimostra che il contesto può cambiare durante il testo.
+
+Il sistema applica automaticamente la nuova lingua e voce.
+
+-Back to English
+
+// Language: En1
+// Mode: Reflective
+
+Now we switch back to English.
+
+The voice should return to an English speaker.
+
+The tone is slightly more reflective.
+
+:Final Note
+
+You can mix languages freely.
+
+Each context switch applies immediately,
+and affects everything that follows.
+
+:SayVoice
+
+SayVoice directly selects the voice used by the speech engine.
+
+Syntax:
+
+// SayVoice: Zoe
+// SayVoice: Samantha
+// SayVoice: Emma
+
+This option gives direct control over the narrator voice.
+
+It is useful when you want a very specific voice,
+or when you want to override the voice selected by the current mode.
+
+If a mode is applied after SayVoice,
+the mode may replace the voice again.
+
+So the order of comments matters.
+
+:SayRate
+
+SayRate directly sets the speaking rate.
+
+Syntax:
+
+// SayRate: 150
+// SayRate: 210
+// SayRate: 95
+
+Lower values produce slower speech.
+Higher values produce faster speech.
+
+This is one of the most useful options for testing.
+
+It can be used alone,
+or together with a mode.
+
+For example,
+you can first select a mode and then fine-tune the speed:
+
+// Mode: Calm
+// SayRate: 145
+
+In that case,
+the mode provides the base style,
+and the explicit rate refines it.
+
+:GroupConsecutiveTextIntoParagraphs
+
+This option controls whether consecutive text lines are grouped into a larger text block.
+
+Syntax:
+
+// GroupConsecutiveTextIntoParagraphs: true
+// GroupConsecutiveTextIntoParagraphs: false
+
+When this option is true,
+consecutive text lines are accumulated locally before being processed.
+
+When it is false,
+each text line is handled separately.
+
+This option is useful for testing,
+because it changes the granularity of the narration.
+
+Grouping usually creates more natural speech.
+Disabling grouping is useful for debugging.
+
+:GroupFullChapter
+
+This option controls whether the system accumulates the whole chapter before producing output.
+
+Syntax:
+
+// GroupFullChapter: true
+// GroupFullChapter: false
+
+When it is true,
+the system collects the chapter content into a larger structure.
+
+When it is false,
+text can be spoken or processed incrementally.
+
+If chapter audio file generation is enabled,
+the system may still split the chapter internally into chunks when parameters change,
+and then merge those chunks into one final file.
+
+So GroupFullChapter controls the high-level chapter behavior,
+not necessarily the number of internal generation steps.
+
+:SpeakText
+
+This option controls whether the content is spoken aloud.
+
+Syntax:
+
+// SpeakText: true
+// SpeakText: false
+
+When it is true,
+the tool uses the speech engine to read the text.
+
+When it is false,
+the tool can still parse,
+log,
+and prepare content without live speech.
+
+This is useful when you want to inspect the structure without hearing it.
+
+:GenerateChapterAudioFiles
+
+This option controls whether chapter audio files are generated.
+
+Syntax:
+
+// GenerateChapterAudioFiles: true
+// GenerateChapterAudioFiles: false
+
+When it is true,
+the tool writes audio files instead of, or in addition to, speaking live.
+
+If mode or voice changes occur inside a chapter,
+the system can generate multiple internal parts and then merge them into one final chapter file.
+
+This allows dynamic narration and still produces a single output file per chapter.
+
+:OutputDir
+
+This option defines the output directory for generated audio files.
+
+Syntax:
+
+// OutputDir: ./audio
+// OutputDir: ./output/book1
+
+This option is useful when you want to separate different audiobook runs,
+languages,
+or versions.
+
+:StartAfterLine
+
+This option allows execution to start only after a given line number.
+
+Syntax:
+
+// StartAfterLine: 20
+
+This is useful for debugging,
+resuming a long run,
+or regenerating only part of a text.
+
+The system ignores earlier content until the requested line is reached.
+
+If the start point is inside a chapter,
+the behavior depends on the active chapter grouping logic.
+
+:StandardPause
+
+This option defines the standard pause duration used in some generated pauses.
+
+Syntax:
+
+// StandardPause: 600
+// StandardPause: 1000
+
+The value is expressed in milliseconds.
+
+A larger value creates a longer pause.
+
+This can be useful when converting paragraph or spacing structure into audible pauses.
+
+:LongPause
+
+This option defines a longer pause duration.
+
+Syntax:
+
+// LongPause: 1000
+// LongPause: 1500
+
+Like StandardPause,
+the value is expressed in milliseconds.
+
+It can be used for stronger separation,
+for example between larger logical blocks.
+
+-Order and Precedence
+
+The order of comments matters.
+
+The system reads the text from top to bottom.
+
+Each parameter applies from the point where it appears.
+
+For example:
+
+// Mode: Calm
+// SayRate: 145
+
+This first selects the Calm mode,
+then overrides the rate.
+
+If later the text contains:
+
+// Mode: Intense
+
+then the mode changes again from that point onward.
+
+In general,
+the most recent setting wins.
+
+-Recommended Usage
+
+A good way to work is:
+
+first choose a context,
+then choose a mode,
+then optionally refine with explicit voice or rate.
+
+For example:
+
+// Language: En1
+// Mode: Reflective
+// SayRate: 150
+
+This keeps the text expressive,
+readable,
+and easy to modify.
+
+-Modes in Practice
+
+Modes are designed to express narration style more naturally than raw technical values.
+
+A typical interpretation is:
+
+VerySlow:
+very deliberate,
+useful for strong emphasis or meditative passages.
+
+Slow:
+clearly slower than normal,
+useful for explanation or calm narration.
+
+Calm:
+relaxed and steady,
+useful for reflective content.
+
+Neutral:
+balanced and general-purpose,
+useful for standard narration.
+
+Fast:
+energetic and dynamic,
+useful for passages with movement or urgency.
+
+VeryFast:
+clearly accelerated,
+useful for experiments or intense flow.
+
+Intense:
+strongly fast or urgent,
+useful for tension,
+emotion,
+or pressure.
+
+Gentle:
+a softer voice or softer pacing,
+useful for emotional,
+sensitive,
+or intimate passages.
+
+The exact mapping depends on the selected context and preset table.
+
+-Final Notes on Comments
+
+Comments are not only notes.
+
+In this system,
+they also form a lightweight control language.
+
+This keeps the text plain and readable,
+while allowing fine control over narration.
+
+You can write the book,
+document your intent,
+and control the audio generation,
+all in the same file.
+
+*Generating Audio
+
+// Mode: Reflective
+
+Now we move to the generation of audio.
+
+If the system is configured to group full chapters,
+all the text inside a chapter is collected together.
+
+However, when parameters change during the chapter,
+the system internally splits the content into smaller chunks.
+
+Each chunk is generated separately,
+using the active voice and speed at that moment.
+
+At the end of the chapter,
+all the chunks are merged into a single audio file.
+
+This allows dynamic narration,
+while still producing a clean final output.
+
+-From Text to Audio Files
+
+Instead of speaking the text aloud,
+the system can also generate audio files.
+
+Each chapter becomes a separate file.
+
+The file name is created from the chapter title,
+and simplified to be safe for the filesystem.
+
+Internally, the system may create temporary files,
+one for each chunk.
+
+These files are then combined into the final chapter file.
+
+:Execution Control
+
+The system also supports execution control.
+
+For example:
+
+// StartAfterLine: 200
+
+This allows you to resume processing
+from a specific point in the text.
+
+It is useful when testing or regenerating parts of the audiobook.
+
+:Final Notes
+
+The system is intentionally simple.
+
+It relies on plain text,
+a few symbols,
+and clear conventions.
+
+There is no heavy formatting,
+no complex rules.
+
+Yet, it is powerful enough
+to generate a complete audiobook.
+
+You can extend it further,
+but even in this basic form,
+it already provides a full workflow.
+
+You write the text.
+You define the structure.
+You control the narration.
+And the system turns it into audio.
+
+Ok, this is all! Have Fun!!!
+// End of document

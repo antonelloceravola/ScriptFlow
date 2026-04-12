@@ -1,0 +1,64 @@
+// This document explains how audio is generated from the text.
+
+// It focuses on:
+// - chunk creation
+// - part files
+// - final merge
+
+*From Text to Audio
+
+// Mode: Neutral
+// NOTE: the next option is disabled by removing the space between // and Generate...
+//GenerateChapterAudioFiles: true
+
+This text is not spoken all at once.
+
+Instead, it is processed in small parts. Each part depends on the current voice, rate, and mode.
+
+-Chunk Creation
+
+// Mode: Calm
+
+At the beginning, the system starts collecting text.
+All sentences are grouped together, as long as the narration settings do not change.
+
+This forms the first chunk.
+
+// Mode: Intense
+
+When a parameter changes, like the mode, the current chunk is closed. A new chunk begins, using the new settings. This allows different parts of the same chapter to have different styles.
+
+:Example
+
+This sentence belongs to the intense mode. It will be generated separately from the previous calm section.
+
+-Generating Part Files
+
+Each chunk is converted into an audio file. These are temporary files. They are stored internally, and usually not meant to be used directly. Each file reflects the exact settings active at the moment it was created.
+
+-Combining the Parts
+
+// Mode: Reflective
+
+At the end of the chapter, all parts are combined. The system merges them in the correct order.
+
+The result is a single audio file per chapter. Even if the chapter used multiple voices or speeds, the final output remains clean and continuous.
+
+-Output Format
+
+// FinalAudioFormat: acx
+
+The final file format can be configured.
+
+For example, the ACX format produces a file suitable for Audible.
+Internally, the system may use intermediate formats, but the final result matches the requested output.
+
+:Final Note
+
+The important idea is simple. You write a continuous story. The system handles the complexity.
+
+It splits,
+generates,
+and merges.
+
+So that in the end, you get a single audio file, ready to be used.
