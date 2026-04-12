@@ -510,11 +510,26 @@ async function finalizeCurrentChapter() {
   }
 }
 
+function parseStartLineParameter(cliArgs) {
+  for (let i = 0; i < cliArgs.length; i++) {
+    const arg = cliArgs[i];
+
+    if (arg === "--start" && cliArgs[i + 1]) {
+      const value = cliArgs[i + 1];
+      FLAGS.StartAfterLine = convertFlagValue(value, FLAGS.StartAfterLine, "StartAfterLine");
+      i++; // skip next
+    }
+  }
+}
+
 // =====================================================
 // MAIN EXECUTION
 // =====================================================
 async function main() {
   const inputFile = process.argv[2];
+  const cliArgs = process.argv.slice(3);
+  parseStartLineParameter(cliArgs);
+
   let seenFirstChapter = false;
   let started = FLAGS.StartAfterLine === 0;
   // Buffers for chapter grouping
