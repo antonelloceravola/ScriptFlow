@@ -154,7 +154,7 @@ ScriptFlow is built around a few core ideas:
 
 ---
 
-## 📚 Documentation
+## 📚 Documentation (see "tutorial" directory)
 
 The project includes several short documents:
 
