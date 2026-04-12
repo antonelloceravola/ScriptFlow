@@ -77,7 +77,10 @@
   }
 
   function normalizeText(text) {
-    return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    return text.replace(/\r\n/g, "\n")
+                .replace(/\r/g, "\n")
+                .replace(/\u2028/g, "\n")
+                .replace(/\u2029/g, "\n");
   }
 
   function parseBook(text, options = {}) {

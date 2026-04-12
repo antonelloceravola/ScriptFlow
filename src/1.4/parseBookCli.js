@@ -551,7 +551,7 @@ async function main() {
     process.exit(1);
   }
 
-  const fullPath = path.resolve(inputFile);
+  let fullPath = path.resolve(inputFile);
 
   if (!fs.existsSync(fullPath)) {
     console.error(`Error: file not found: ${fullPath}`);
