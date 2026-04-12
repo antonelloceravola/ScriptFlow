@@ -5,8 +5,6 @@
 <h1 align="center">🎧 ScriptFlow</h1>
 <p align="center"><i>The script langugae for audio narrations</i></p>
 
-# 🎧 ScriptFlow
-
 **ScriptFlow** is a lightweight scripting language and toolchain for generating audiobooks from plain text.
 
 It allows you to write structured text and control narration dynamically — including voice, speed, language, and audio generation — all within a single document.
