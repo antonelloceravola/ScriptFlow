@@ -13,6 +13,7 @@ const {
   HeadingPrefixes,
   getPauseTag
 } = require("./config.js");
+const { exit } = require("process");
 
 let pendingPausePrefix = "";
 // Extend flags with derived parameters
@@ -573,9 +574,14 @@ async function finalizeCurrentChapter() {
   }
 }
 
-function parseCommandLineParameters(cliArgs) {
+async function parseCommandLineParameters(cliArgs) {
   for (let i = 0; i < cliArgs.length; i++) {
     const arg = cliArgs[i];
+
+    if (arg === "--listVoices") {
+      await listVoices();
+      process.exit(0);
+    }
 
     if (arg === "--start" && cliArgs[i + 1]) {
       const value = cliArgs[i + 1];
@@ -611,13 +617,31 @@ function parseCommandLineParameters(cliArgs) {
   }
 }
 
+async function listVoices() {
+  await new Promise((resolve, reject) => {
+    console.log("Available voices:");
+    const child = spawn("say", ["-v", "?"], { stdio: "inherit" });
+
+    child.on("error", (err) => {
+      console.error(`Error listing voices: ${err.message}`);
+    });
+    child.on("close", code => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`listing voices with code ${code}`));
+      }
+    });
+  });
+}
+
 // =====================================================
 // MAIN EXECUTION
 // =====================================================
 async function main() {
   //const inputFile = process.argv[2];
   const cliArgs = process.argv.slice(2);
-  parseCommandLineParameters(cliArgs);
+  await parseCommandLineParameters(cliArgs);
 
   let seenFirstChapter = false;
   let started = FLAGS.StartAfterLine === 0;
