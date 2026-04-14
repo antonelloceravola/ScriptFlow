@@ -14,6 +14,7 @@ const {
   getPauseTag
 } = require("./config.js");
 const { exit } = require("process");
+const { get } = require("http");
 
 let pendingPausePrefix = "";
 // Extend flags with derived parameters
@@ -275,30 +276,59 @@ async function flushChapterBuffer(chapterBuffer, chapterTitle, chapterIndex) {
   }
 }
 
-function getItemPrefix(type, item) {
-  let prefix = "";
-  const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type];
+// function getItemPrefix(type, item) {
+//   let prefix = "";
+//   const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type];
 
-  if( headingPrefix && !item.text.toLowerCase().trim().startsWith(headingPrefix.toLowerCase()) ) {
-    switch (type) {
-      case "text": break;
-      case "chapter": 
-      case "section":
-      case "subsection":
-        const pauseTag = getPauseTag(FLAGS.ShortPause);
-        prefix = ( headingPrefix || type )+ pauseTag;
-        break;
+//   if( headingPrefix && !item.text.toLowerCase().trim().startsWith(headingPrefix.toLowerCase()) ) {
+//     switch (type) {
+//       case "text": break;
+//       case "chapter": 
+//       case "section":
+//       case "subsection":
+//         const pauseTag = getPauseTag(FLAGS.ShortPause);
+//         prefix = `${headingPrefix || type} ${pauseTag} `;
+//         break;
+//     }
+//   }
+//   return prefix;
+// }
+function getItemPrefixPostfix(type, item) {
+  const result = { prefix: "", postfix: "" };
+  const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type] || "";
+
+  switch (type) {
+    case "chapter":
+    case "section":
+    case "subsection": {
+      const prePause = getPauseTag(FLAGS.ShortPause);
+      const postPause = getPauseTag(FLAGS.LongPause);
+
+      if ( headingPrefix &&
+        !item.text.toLowerCase().trim().startsWith(headingPrefix.toLowerCase()))
+      {
+        result.prefix = `${headingPrefix}`;
+      }
+      result.prefix = `${prePause} ${result.prefix} `;
+      result.postfix = ` ${postPause}`;
     }
+
+    default:
+      return result;
   }
-  return prefix;
+  return result;
+}
+
+function getRenderedItemText(type, item) {
+  const { prefix, postfix } = getItemPrefixPostfix(type, item);
+  return `${prefix}${item.text}${postfix}`;
 }
 
 async function consoleLogger(type, message, item) {
 
   if (FLAGS.SpeakText ) {
-    const prefix = getItemPrefix(type, item);
     try {
-      await speakText(`${prefix}${item.text}`);
+      await speakText(getRenderedItemText(type, item));
     } catch (err) {
       console.error(`Speech error at line ${item.lineNumber}: ${err.message}`);
     }
@@ -740,7 +770,7 @@ async function main() {
         currentChapterTitle = item.text;
         seenFirstChapter = true;
 
-        pushChapterContent(item.text);
+        pushChapterContent(getRenderedItemText("chapter", item));
       } else {
         await consoleLogger("chapter", `[CHAPTER]    line ${item.lineNumber}: ${item.text}`, item);
       }
@@ -755,7 +785,7 @@ async function main() {
       }
 
       if (shouldAccumulateChapterAudio()) {
-        pushChapterContent(item.text);
+        pushChapterContent(getRenderedItemText("chapter", item));
       } else {
         await consoleLogger("section", `[SECTION]    line ${item.lineNumber}: ${item.text}`, item);
       }
@@ -770,7 +800,7 @@ async function main() {
       }
 
       if (shouldAccumulateChapterAudio()) {
-        pushChapterContent(item.text);
+        pushChapterContent(getRenderedItemText("chapter", item));
       } else {
         await consoleLogger("subsection", `[SUBSECTION] line ${item.lineNumber}: ${item.text}`, item);
       }
