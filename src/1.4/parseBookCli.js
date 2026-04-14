@@ -778,7 +778,6 @@ async function main() {
       continue;
     }
 
-    //if (item.type === "chapter") {
     //if item.type === "chapter"|"section"|"subsection") 
     if (headingTypes.has(item.type)) {
       const typeUPPER = item.type.toUpperCase();
@@ -808,40 +807,6 @@ async function main() {
 
       continue;
     }
-
-    // if (item.type === "section") {
-    //   const typeUPPER = item.type.toUpperCase();
-
-    //   await flushParagraphBuffer();
-    //   if (FLAGS.LogSectionTitle) {
-    //     console.log(`[${typeUPPER}]    line ${item.lineNumber}: ${item.text}`);
-    //   }
-
-    //   if (shouldAccumulateChapterAudio()) {
-    //     pushChapterContent(getRenderedItemText(item.type, item));
-    //   } else {
-    //     await consoleLogger(item.type, `[${typeUPPER}]    line ${item.lineNumber}: ${item.text}`, item);
-    //   }
-
-    //   continue;
-    // }
-
-    // if (item.type === "subsection") {
-    //   const typeUPPER = item.type.toUpperCase();
-
-    //   await flushParagraphBuffer();
-    //   if (FLAGS.LogSubSectionTitle) {
-    //     console.log(`[${typeUPPER}] line ${item.lineNumber}: ${item.text}`);
-    //   }
-
-    //   if (shouldAccumulateChapterAudio()) {
-    //     pushChapterContent(getRenderedItemText(item.type, item));
-    //   } else {
-    //     await consoleLogger(item.type, `[${typeUPPER}] line ${item.lineNumber}: ${item.text}`, item);
-    //   }
-
-    //   continue;
-    // }
 
     if (item.type === "text") {
       if (FLAGS.GroupConsecutiveTextIntoParagraphs) {
