@@ -783,22 +783,6 @@ async function main() {
       }
     }
 
-    // if (item.type === "param") {
-    //   await flushParagraphBuffer();
-
-    //   const speechSettingChanged = isSpeechSettingParameterName(item.name);
-
-    //   if (FLAGS.GenerateChapterAudioFiles && speechSettingChanged) {
-    //     await flushChapterChunkBuffer();
-    //   }
-
-    //   applyParameterToFlags(item);
-    //   // Dynamic StartAfterLine handling
-    //   started = checkForStartTargetChange(started, item);
-
-    //   continue;
-    // }
-
     //if item.type === "chapter"|"section"|"subsection") 
     if (headingTypes.has(item.type)) {
       const typeUPPER = item.type.toUpperCase();
