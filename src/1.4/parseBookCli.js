@@ -15,6 +15,7 @@ const {
 } = require("./config.js");
 const { exit } = require("process");
 const { get } = require("http");
+const { log } = require("console");
 
 let pendingPausePrefix = "";
 // Extend flags with derived parameters
@@ -276,23 +277,6 @@ async function flushChapterBuffer(chapterBuffer, chapterTitle, chapterIndex) {
   }
 }
 
-// function getItemPrefix(type, item) {
-//   let prefix = "";
-//   const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type];
-
-//   if( headingPrefix && !item.text.toLowerCase().trim().startsWith(headingPrefix.toLowerCase()) ) {
-//     switch (type) {
-//       case "text": break;
-//       case "chapter": 
-//       case "section":
-//       case "subsection":
-//         const pauseTag = getPauseTag(FLAGS.ShortPause);
-//         prefix = `${headingPrefix || type} ${pauseTag} `;
-//         break;
-//     }
-//   }
-//   return prefix;
-// }
 function getItemPrefixPostfix(type, item) {
   const result = { prefix: "", postfix: "" };
   const headingPrefix = HeadingPrefixes[FLAGS.Language]?.[type] || "";
@@ -307,9 +291,9 @@ function getItemPrefixPostfix(type, item) {
       if ( headingPrefix &&
         !item.text.toLowerCase().trim().startsWith(headingPrefix.toLowerCase()))
       {
-        result.prefix = `${headingPrefix}`;
+        result.prefix = `${headingPrefix} ${prePause} `;
       }
-      result.prefix = `${prePause} ${result.prefix} `;
+      result.prefix = `${prePause} ${result.prefix}`;
       result.postfix = ` ${postPause}`;
     }
 
@@ -518,6 +502,31 @@ let chapterIndex = 0;
 let chapterChunkBuffer = [];
 let chapterPartFiles = [];
 
+function appendPartsLog(logText) {
+  if (!FLAGS.GenerateChapterAudioFiles) {
+    return;
+  }
+
+  const partsDir = path.join(FLAGS.OutputDir, "_parts");
+  fs.mkdirSync(partsDir, { recursive: true });
+
+  const logFile = path.join(partsDir, "parts-map.log");
+  fs.appendFileSync(logFile, logText + "\n", "utf8");
+
+  console.log(logText);
+}
+
+function resetPartsLog() {
+  const partsDir = path.join(FLAGS.OutputDir, "_parts");
+  const logFile = path.join(partsDir, "parts-map.log");
+
+  fs.mkdirSync(partsDir, { recursive: true });
+  fs.writeFileSync(logFile,
+    `--- ScriptFlow Parts Map ---\nStarted: ${new Date().toISOString()}\n\n`,
+    "utf8"
+  );
+}
+
 function pushChapterContent(text) {
   if (!shouldAccumulateChapterAudio()) {
     return;
@@ -550,9 +559,10 @@ async function flushChapterChunkBuffer() {
   const partIndex = chapterPartFiles.length + 1;
   const outputFile = buildChapterPartFilePath(chapterIndex, currentChapterTitle, partIndex);
 
-  console.log(
+  appendPartsLog(
     `[WRITE PART]   ${currentChapterTitle} -> ${path.basename(outputFile)} ` +
-    `[voice=${FLAGS.SayVoice} rate=${FLAGS.SayRate}]`
+    `[voice=${FLAGS.SayVoice} rate=${FLAGS.SayRate}]` +
+    `text="${ParserLib.previewText(fullText, 80)}"`
   );
 
   await speakText(fullText, outputFile);
@@ -685,11 +695,18 @@ async function main() {
   // Pending pause prefix initialization
   pendingPausePrefix = "";
 
+  // Run the merge and terimate
   if (FLAGS.DoMergeOnly) {
     console.log("--- MERGE ONLY MODE ---");
     await mergeExistingParts();
     console.log("Merge completed.");
     return;
+  }
+
+  // Clear parts log at the start of processing
+  // if we are going to generate audio files.
+  if (FLAGS.GenerateChapterAudioFiles) {
+    resetPartsLog();
   }
 
   console.log(`[VOICE=${FLAGS.SayVoice} RATE=${FLAGS.SayRate}]\n`);
@@ -713,6 +730,12 @@ async function main() {
   });
 
   const counts = ParserLib.getCounts(items);
+  const headingTypes = new Set(["chapter", "section", "subsection"]);
+  const logFlagsByType = {
+    chapter:    function() { return FLAGS.LogChapterTitle; },
+    section:    function() { return FLAGS.LogSectionTitle; },
+    subsection: function() { return FLAGS.LogSubSectionTitle; }
+  };
 
   for (const item of items) {
     // Update current chapter context for StartAfterLine logic
@@ -755,58 +778,70 @@ async function main() {
       continue;
     }
 
-    if (item.type === "chapter") {
+    //if (item.type === "chapter") {
+    //if item.type === "chapter"|"section"|"subsection") 
+    if (headingTypes.has(item.type)) {
+      const typeUPPER = item.type.toUpperCase();
+      const logMessage = `[${typeUPPER}]    line ${item.lineNumber}: ${item.text}`;
+
       await flushParagraphBuffer();
-      if (FLAGS.LogChapterTitle) {
-        console.log(`[CHAPTER]    line ${item.lineNumber}: ${item.text}`);
+      //if (FLAGS.LogChapterTitle) {
+      if (logFlagsByType[item.type]?.()) {
+        console.log(logMessage);
       }
 
       if (shouldAccumulateChapterAudio()) {
-        if (seenFirstChapter) {
-          await finalizeCurrentChapter();
+        if (item.type === "chapter") {
+          if (seenFirstChapter) {
+            await finalizeCurrentChapter();
+          }
+
+          chapterIndex += 1;
+          currentChapterTitle = item.text;
+          seenFirstChapter = true;
         }
 
-        chapterIndex += 1;
-        currentChapterTitle = item.text;
-        seenFirstChapter = true;
-
-        pushChapterContent(getRenderedItemText("chapter", item));
+        pushChapterContent(getRenderedItemText(item.type, item));
       } else {
-        await consoleLogger("chapter", `[CHAPTER]    line ${item.lineNumber}: ${item.text}`, item);
+        await consoleLogger(item.type, logMessage, item);
       }
 
       continue;
     }
 
-    if (item.type === "section") {
-      await flushParagraphBuffer();
-      if (FLAGS.LogSectionTitle) {
-        console.log(`[SECTION]    line ${item.lineNumber}: ${item.text}`);
-      }
+    // if (item.type === "section") {
+    //   const typeUPPER = item.type.toUpperCase();
 
-      if (shouldAccumulateChapterAudio()) {
-        pushChapterContent(getRenderedItemText("chapter", item));
-      } else {
-        await consoleLogger("section", `[SECTION]    line ${item.lineNumber}: ${item.text}`, item);
-      }
+    //   await flushParagraphBuffer();
+    //   if (FLAGS.LogSectionTitle) {
+    //     console.log(`[${typeUPPER}]    line ${item.lineNumber}: ${item.text}`);
+    //   }
 
-      continue;
-    }
+    //   if (shouldAccumulateChapterAudio()) {
+    //     pushChapterContent(getRenderedItemText(item.type, item));
+    //   } else {
+    //     await consoleLogger(item.type, `[${typeUPPER}]    line ${item.lineNumber}: ${item.text}`, item);
+    //   }
 
-    if (item.type === "subsection") {
-      await flushParagraphBuffer();
-      if (FLAGS.LogSubSectionTitle) {
-        console.log(`[SUBSECTION] line ${item.lineNumber}: ${item.text}`);
-      }
+    //   continue;
+    // }
 
-      if (shouldAccumulateChapterAudio()) {
-        pushChapterContent(getRenderedItemText("chapter", item));
-      } else {
-        await consoleLogger("subsection", `[SUBSECTION] line ${item.lineNumber}: ${item.text}`, item);
-      }
+    // if (item.type === "subsection") {
+    //   const typeUPPER = item.type.toUpperCase();
 
-      continue;
-    }
+    //   await flushParagraphBuffer();
+    //   if (FLAGS.LogSubSectionTitle) {
+    //     console.log(`[${typeUPPER}] line ${item.lineNumber}: ${item.text}`);
+    //   }
+
+    //   if (shouldAccumulateChapterAudio()) {
+    //     pushChapterContent(getRenderedItemText(item.type, item));
+    //   } else {
+    //     await consoleLogger(item.type, `[${typeUPPER}] line ${item.lineNumber}: ${item.text}`, item);
+    //   }
+
+    //   continue;
+    // }
 
     if (item.type === "text") {
       if (FLAGS.GroupConsecutiveTextIntoParagraphs) {

@@ -80,6 +80,7 @@
       "Boy":        { voice: "Nathan",  rate: "Neutral" },
       "Girl":       { voice: "Joelle",  rate: "Neutral" },
       "Serious":    { voice: "Nathan",  rate: "Neutral" },
+      "Serious2":   { voice: "Zoe",     rate: "Neutral" },
     },
     En1: {
       "Narrator":   { voice: "Lee",     rate: "Neutral" },
@@ -93,18 +94,22 @@
       "Boy":        { voice: "Nathan",  rate: "Neutral" },
       "Girl":       { voice: "Ava",     rate: "Neutral" },
       "Serious":    { voice: "Kate",    rate: "Neutral" },
+      "Serious2":   { voice: "Zoe",     rate: "Neutral" },
     },
     It0: {
       "Narrator":   { voice: "Emma",    rate: "Neutral" },
       "Boy":        { voice: "Luca",    rate: "Neutral" },
       "Girl":       { voice: "Paola",   rate: "Neutral" },
       "Serious":    { voice: "Alice",   rate: "Neutral" },
+      "Serious2":   { voice: "Paola",   rate: "Neutral" },
+
     },
     It1: {
       "Narrator":   { voice: "Emma",    rate: "Neutral" },
       "Boy":        { voice: "Luca",    rate: "Neutral" },
       "Girl":       { voice: "Paola",   rate: "Neutral" },
       "Serious":    { voice: "Alice",   rate: "Neutral" },
+      "Serious2":   { voice: "Paola",   rate: "Neutral" },
     }
   };
 
