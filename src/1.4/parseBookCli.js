@@ -503,6 +503,8 @@ let chapterChunkBuffer = [];
 let chapterPartFiles = [];
 
 function appendPartsLog(logText) {
+  console.log(logText);
+
   if (!FLAGS.GenerateChapterAudioFiles) {
     return;
   }
@@ -512,8 +514,6 @@ function appendPartsLog(logText) {
 
   const logFile = path.join(partsDir, "parts-map.log");
   fs.appendFileSync(logFile, logText + "\n", "utf8");
-
-  console.log(logText);
 }
 
 function resetPartsLog() {
@@ -561,8 +561,7 @@ async function flushChapterChunkBuffer() {
 
   appendPartsLog(
     `[WRITE PART]   ${currentChapterTitle} -> ${path.basename(outputFile)} ` +
-    `[voice=${FLAGS.SayVoice} rate=${FLAGS.SayRate}]` +
-    `text="${ParserLib.previewText(fullText, 80)}"`
+    `[voice=${FLAGS.SayVoice} rate=${FLAGS.SayRate}]`
   );
 
   await speakText(fullText, outputFile);
@@ -709,7 +708,7 @@ async function main() {
     resetPartsLog();
   }
 
-  console.log(`[VOICE=${FLAGS.SayVoice} RATE=${FLAGS.SayRate}]\n`);
+  appendPartsLog(`[VOICE=${FLAGS.SayVoice} RATE=${FLAGS.SayRate}]\n`);
 
   if (!FLAGS.InputFile) {
     console.error("Usage: node parseBookCli.js <input-file>");
@@ -736,6 +735,8 @@ async function main() {
     section:    function() { return FLAGS.LogSectionTitle; },
     subsection: function() { return FLAGS.LogSubSectionTitle; }
   };
+  // Parameter settings to skip before --start/StartAferLine is reached
+  const paramToSkipInStartAfer = new Set(["StartAfterLine", "Pause"]);
 
   for (const item of items) {
     // Update current chapter context for StartAfterLine logic
@@ -744,6 +745,26 @@ async function main() {
           item.lineNumber < FLAGS.StartAfterLine )
     {
       currentChapterTitle = item.text;
+    }
+
+    if (item.type === "param") {
+      await flushParagraphBuffer();
+
+      const speechSettingChanged = isSpeechSettingParameterName(item.name);
+
+      if (started && FLAGS.GenerateChapterAudioFiles && speechSettingChanged) {
+        await flushChapterChunkBuffer();
+      }
+
+      if (started || !paramToSkipInStartAfer.has(item.name)) {
+        applyParameterToFlags(item);
+      }
+
+      if (started) {
+        started = checkForStartTargetChange(started, item);
+      }
+
+      continue;
     }
 
     if (!started) {
@@ -762,21 +783,21 @@ async function main() {
       }
     }
 
-    if (item.type === "param") {
-      await flushParagraphBuffer();
+    // if (item.type === "param") {
+    //   await flushParagraphBuffer();
 
-      const speechSettingChanged = isSpeechSettingParameterName(item.name);
+    //   const speechSettingChanged = isSpeechSettingParameterName(item.name);
 
-      if (FLAGS.GenerateChapterAudioFiles && speechSettingChanged) {
-        await flushChapterChunkBuffer();
-      }
+    //   if (FLAGS.GenerateChapterAudioFiles && speechSettingChanged) {
+    //     await flushChapterChunkBuffer();
+    //   }
 
-      applyParameterToFlags(item);
-      // Dynamic StartAfterLine handling
-      started = checkForStartTargetChange(started, item);
+    //   applyParameterToFlags(item);
+    //   // Dynamic StartAfterLine handling
+    //   started = checkForStartTargetChange(started, item);
 
-      continue;
-    }
+    //   continue;
+    // }
 
     //if item.type === "chapter"|"section"|"subsection") 
     if (headingTypes.has(item.type)) {
@@ -786,7 +807,7 @@ async function main() {
       await flushParagraphBuffer();
       //if (FLAGS.LogChapterTitle) {
       if (logFlagsByType[item.type]?.()) {
-        console.log(logMessage);
+        appendPartsLog(logMessage);
       }
 
       if (shouldAccumulateChapterAudio()) {
@@ -833,9 +854,9 @@ async function main() {
         };
 
         if (FLAGS.LogTextFull) {
-          console.log(`[TEXT FULL]  line ${effItem.lineNumber}: ${effItem.text}`);
+          appendPartsLog(`[TEXT FULL]  line ${effItem.lineNumber}: ${effItem.text}`);
         } else if (FLAGS.LogTextInitial) {
-          console.log(`[TEXT]       line ${effItem.lineNumber}: ${ParserLib.previewText(effItem.text)}`);
+          appendPartsLog(`[TEXT]       line ${effItem.lineNumber}: ${ParserLib.previewText(effItem.text)}`);
         }
 
         if (shouldAccumulateChapterAudio()) {
