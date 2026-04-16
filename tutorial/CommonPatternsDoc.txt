@@ -2,13 +2,13 @@
 
 // Each example is small and practical.
 
-*Common Patterns
+# Common Patterns
 
 // Mode: Neutral
 
 This chapter shows how to combine features to achieve useful effects.
 
--Emphasizing a Sentence
+## Emphasizing a Sentence
 
 // Mode: Calm
 
@@ -24,11 +24,11 @@ This sentence is important. Take your time to understand it.
 
 And now we continue as usual.
 
-:Idea
+### Idea
 
 Use a slower mode to highlight key ideas.
 
--Switching Language for a Quote
+## Switching Language for a Quote
 
 // Language: En1
 
@@ -44,11 +44,11 @@ He said:
 
 Then he continued in English.
 
-:Idea
+### Idea
 
 Use language switching to include authentic quotes.
 
--Dialogue with Different Voices
+## Dialogue with Different Voices
 
 // Mode: Neutral
 
@@ -74,11 +74,11 @@ The conversation started.
 
 “Let’s try anyway.”
 
-:Idea
+### Idea
 
 Change voice per line to simulate dialogue.
 
--Speeding Up a Sequence
+## Speeding Up a Sequence
 
 // Mode: Neutral
 
@@ -99,11 +99,11 @@ Too fast to follow. Too fast to think. Too fast to stop.
 
 And then it slowed down again.
 
-:Idea
+### Idea
 
 Increase speed to create tension or urgency.
 
--Soft Ending
+## Soft Ending
 
 // Mode: Reflective
 
@@ -121,21 +121,21 @@ Softer.
 
 And finally, it stops.
 
-:Idea
+### Idea
 
 Use gentle and slow modes for endings.
 
--Testing a Small Section
+## Testing a Small Section
 
 // StartAfterLine: Dialogue
 
 This part will only run when testing from the dialogue section.
 
-:Idea
+### Idea
 
 Use StartAfterLine to isolate parts of the text.
 
--Combining Everything
+## Combining Everything
 
 // Language: En1
 // Mode: Calm
@@ -158,10 +158,10 @@ Due secondi passati ora
 
 All within the same chapter.
 
-:Idea
+### Idea
 
 Combine features gradually. Do not change everything at once.
 
--Final Note
+## Final Note
 
 These are just examples. You can mix and adapt them. The goal is simple: Make the narration match the meaning.

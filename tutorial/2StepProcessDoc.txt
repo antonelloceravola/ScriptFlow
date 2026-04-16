@@ -19,14 +19,14 @@
 // SkipMerging: true
 
 
-*Chapter One
+# Chapter One
 
 This is the first line of text.
 This is the second line of text.
 
 This is the third line of text.
 
--Section A
+## Section A
 
 This is section text.
 This is another section text.
@@ -34,18 +34,18 @@ This is another section text.
 Those are some more section text.
 And more section text.
 
-:Subsection A1
+### Subsection A1
 
 More detailed text here.
 
-*Chapter Two
+# Chapter Two
 
 This is the first line of text.
 This is the second line of text.
 
 This is the third line of text.
 
--Section B
+## Section B
 
 This is section text.
 This is another section text.

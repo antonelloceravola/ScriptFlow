@@ -35,9 +35,9 @@ It introduces a **domain-specific language (DSL)** that lets you:
 
 * 📘 **Structured Text**
 
-  * `*` → Chapters
-  * `-` → Sections
-  * `:` → Subsections
+  * `# ` → Chapters
+  * `## ` → Sections
+  * `### ` → Subsections
 
 * 🎭 **Dynamic Narration**
 
@@ -71,7 +71,7 @@ It introduces a **domain-specific language (DSL)** that lets you:
 ## 🧾 Example
 
 ```text
-*The Day Everything Worked
+# The Day Everything Worked
 
 // Mode: Neutral
 

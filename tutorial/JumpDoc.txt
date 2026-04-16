@@ -2,13 +2,13 @@
 
 // SpeakText: true
 
-*StartAfterLine Test
+# StartAfterLine Test
 
 // Mode: Neutral
 
 This is the beginning of the file. You should hear this normally.
 
--Section One
+## Section One
 
 This is still before any jump. Everything should be processed.
 
@@ -61,11 +61,11 @@ This is also skipped.
 
 This is the first line that should be heard after the numeric jump.
 
--After Numeric Jump
+## After Numeric Jump
 
 Now the system has resumed. Everything from here should be processed normally.
 
-:Checkpoint One
+### Checkpoint One
 
 This confirms that numeric jump worked.
 
@@ -76,27 +76,27 @@ This line should be skipped, because we now jump by text.
 This is also skipped. 
 This is also skipped.
 
--Intermediate Section
+## Intermediate Section
 
 This section should NOT be heard.
 
 This is also skipped.
 
-:Still Skipped
+### Still Skipped
 
 Nothing here should be processed.
 
 // This is the target text
 
--Target Section
+## Target Section
 
 This section name matches the StartAfterLine text. Execution should resume here. This line should be heard. This confirms that text-based jumping works.
 
-:Final Check
+### Final Check
 
 If you hear this,
 both numeric and string-based jumps worked correctly.
 
-*Second Chapter
+# Second Chapter
 
 This chapter should also be processed normally. Everything should continue as expected.

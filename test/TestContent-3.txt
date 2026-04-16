@@ -1,26 +1,26 @@
-*Title: Emotional Ignorance
+# Title: Emotional Ignorance
 
-:Why We Feel Everything and Understand Almost Nothing
+### Why We Feel Everything and Understand Almost Nothing
 
 From the moment we wake up, go to work, buy coffee, or meet friends, we experience countless emotions till we go to sleep, but rarely truly invest the time to understand them or use them to improve our life.
 
-:First Edition
+### First Edition
 
 
-*Preface
+# Preface
 
--Antonello
+## Antonello
 
 As a child, I was always curious about people and their behavior. Yet, for reasons I could not fully understand at that time, their behavior often felt difficult for me to interpret. I was one of those children who could easily spend hours absorbed in playing, building, or exploring an idea, and regularly paying too little attention to the subtle signals others were exchanging around me. That distance created a barrier.
 
 In many ways, that question became one of the seeds of this book.
 
--Jean
+## Jean
 
 I grew up at the crossroads of philosophy and the sciences that explore mind and spirit. My father — chief physician in both hospital and community care, a frontline man — was a professor of psychiatry, and as a child I often found myself close to worlds that “respectable” society prefers to keep at arm’s length: clinics, case files, the fragile architectures of the mind, and the social stigma borne by that profoundly civilized “people of the mad”. 
 
 
-*Introduction: Breaking the Mask
+# Introduction: Breaking the Mask
 
 We have all heard the idea that everyone wears a mask in public. A familiar story, repeated many times. The idea that we present a public version of ourselves to the world — more controlled, more acceptable, more protected — while keeping our fragile, uncertain, or vulnerable parts hidden inside.
 
@@ -29,7 +29,7 @@ Not one we put on in front of others, but one we slowly grow over time. A mask m
 
 And that is the problem.
 
--The Mask We Grow
+## The Mask We Grow
 
 When we are born, we are direct. Not naïve. Not empty. Just direct. We cry when something hurts. We smile when something feels good. We reach out when we want closeness, and we pull away when we don’t. There is no strategy in it. No performance. No interpretation. What happens inside us appears immediately on the outside.
 The mask grows thicker.

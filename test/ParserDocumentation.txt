@@ -34,13 +34,13 @@
 // GroupConsecutiveTextIntoParagraphs: false
 // SpeakText: true
 
-*Title: The Ultimate Audio Book Generator
+# Title: The Ultimate Audio Book Generator
 
--Lets understand how it works
+## Lets understand how it works
 
 We are going here to explain how the text for this audio book generator can be structured.
 
-*Understanding the Structure
+# Understanding the Structure
 
 // Mode: Neutral
 
@@ -52,7 +52,7 @@ Or you can listen to it as an audiobook.
 
 In both cases, the structure remains the same.
 
--Why Structure Matters
+## Why Structure Matters
 
 Structure helps the system understand where it is in the book.
 
@@ -62,7 +62,7 @@ and sections from smaller parts.
 This separation is important,
 because it determines how the audiobook is generated.
 
-:Markers
+### Markers
 
 Markers are intentionally simple.
 
@@ -79,7 +79,7 @@ and becomes part of the narration.
 
 // Mode: Calm
 
-:Text Blocks
+### Text Blocks
 
 Text is processed in blocks.
 
@@ -89,7 +89,7 @@ the system can group them together into paragraphs.
 This grouping can also change dynamically during execution.This allows the narration to feel continuous and natural. Instead of breaking the flow,
 it preserves it.
 
--Comments and Parameters
+## Comments and Parameters
 
 Comments begin with two slashes, followed by a space.
 
@@ -111,7 +111,7 @@ the voice and speaking speed will change.
 This allows you to control the narration dynamically,
 directly from the text.
 
-:Modes
+### Modes
 
 Instead of manually setting voice and rate each time,
 you can use predefined modes.
@@ -127,7 +127,7 @@ such as voice and speaking rate.
 This makes the text easier to write,
 and easier to maintain.
 
-:Dynamic Behavior
+### Dynamic Behavior
 
 This dynamic behavior is very powerful.
 
@@ -149,9 +149,9 @@ The system reacts immediately to the change.
 
 // A new chapter starts here.
 
-*Comment Options and Modes
+# Comment Options and Modes
 
--Overview
+## Overview
 
 This chapter explains all the options that can be set through comments in the text.
 
@@ -175,7 +175,7 @@ This means that comment options are dynamic.
 They do not affect the text before them.
 They only affect the text that comes after them.
 
-:General Syntax
+### General Syntax
 
 The general syntax is:
 
@@ -195,7 +195,7 @@ If the option name is unknown,
 the line is ignored as a parameter,
 although it can still remain useful as a human comment.
 
--Comments Without Parameters
+## Comments Without Parameters
 
 Not every comment needs to be a command.
 
@@ -210,11 +210,11 @@ They are not spoken,
 they are not logged as content,
 and they do not change the behavior of the tool.
 
--Available Comment Options
+## Available Comment Options
 
 The following options can be set through comments.
 
-:Mode
+### Mode
 
 Mode is a high-level option.
 
@@ -252,7 +252,7 @@ and potentially other narration settings if they are added in the future.
 If a mode is unknown,
 it is ignored.
 
-:Language
+### Language
 
 Language selects a narration context.
 
@@ -275,7 +275,7 @@ while the Italian context may use another.
 This option is useful when the same tool is used for books in different languages.
 
 // This example demonstrates switching between languages using Language.
-*Language Switching Demo
+# Language Switching Demo
 
 // Language: En1
 // Mode: Neutral
@@ -286,7 +286,7 @@ This section should be spoken using an English voice.
 
 The tone is neutral and easy to follow.
 
--Transition to Italian
+## Transition to Italian
 
 // Language: It1
 // Mode: Calm
@@ -298,13 +298,13 @@ Questa parte dovrebbe essere letta con una voce italiana.
 Il ritmo è più calmo,
 per rendere il contenuto più riflessivo.
 
-:Breve spiegazione
+### Breve spiegazione
 
 Questo dimostra che il contesto può cambiare durante il testo.
 
 Il sistema applica automaticamente la nuova lingua e voce.
 
--Back to English
+## Back to English
 
 // Language: En1
 // Mode: Reflective
@@ -315,14 +315,14 @@ The voice should return to an English speaker.
 
 The tone is slightly more reflective.
 
-:Final Note
+### Final Note
 
 You can mix languages freely.
 
 Each context switch applies immediately,
 and affects everything that follows.
 
-:SayVoice
+### SayVoice
 
 SayVoice directly selects the voice used by the speech engine.
 
@@ -342,7 +342,7 @@ the mode may replace the voice again.
 
 So the order of comments matters.
 
-:SayRate
+### SayRate
 
 SayRate directly sets the speaking rate.
 
@@ -370,7 +370,7 @@ In that case,
 the mode provides the base style,
 and the explicit rate refines it.
 
-:GroupConsecutiveTextIntoParagraphs
+### GroupConsecutiveTextIntoParagraphs
 
 This option controls whether consecutive text lines are grouped into a larger text block.
 
@@ -391,7 +391,7 @@ because it changes the granularity of the narration.
 Grouping usually creates more natural speech.
 Disabling grouping is useful for debugging.
 
-:GroupFullChapter
+### GroupFullChapter
 
 This option controls whether the system accumulates the whole chapter before producing output.
 
@@ -413,7 +413,7 @@ and then merge those chunks into one final file.
 So GroupFullChapter controls the high-level chapter behavior,
 not necessarily the number of internal generation steps.
 
-:SpeakText
+### SpeakText
 
 This option controls whether the content is spoken aloud.
 
@@ -432,7 +432,7 @@ and prepare content without live speech.
 
 This is useful when you want to inspect the structure without hearing it.
 
-:GenerateChapterAudioFiles
+### GenerateChapterAudioFiles
 
 This option controls whether chapter audio files are generated.
 
@@ -449,7 +449,7 @@ the system can generate multiple internal parts and then merge them into one fin
 
 This allows dynamic narration and still produces a single output file per chapter.
 
-:OutputDir
+### OutputDir
 
 This option defines the output directory for generated audio files.
 
@@ -462,7 +462,7 @@ This option is useful when you want to separate different audiobook runs,
 languages,
 or versions.
 
-:StartAfterLine
+### StartAfterLine
 
 This option allows execution to start only after a given line number.
 
@@ -479,7 +479,7 @@ The system ignores earlier content until the requested line is reached.
 If the start point is inside a chapter,
 the behavior depends on the active chapter grouping logic.
 
-:StandardPause
+### StandardPause
 
 This option defines the standard pause duration used in some generated pauses.
 
@@ -494,7 +494,7 @@ A larger value creates a longer pause.
 
 This can be useful when converting paragraph or spacing structure into audible pauses.
 
-:LongPause
+### LongPause
 
 This option defines a longer pause duration.
 
@@ -509,7 +509,7 @@ the value is expressed in milliseconds.
 It can be used for stronger separation,
 for example between larger logical blocks.
 
--Order and Precedence
+## Order and Precedence
 
 The order of comments matters.
 
@@ -534,7 +534,7 @@ then the mode changes again from that point onward.
 In general,
 the most recent setting wins.
 
--Recommended Usage
+## Recommended Usage
 
 A good way to work is:
 
@@ -552,7 +552,7 @@ This keeps the text expressive,
 readable,
 and easy to modify.
 
--Modes in Practice
+## Modes in Practice
 
 Modes are designed to express narration style more naturally than raw technical values.
 
@@ -596,7 +596,7 @@ or intimate passages.
 
 The exact mapping depends on the selected context and preset table.
 
--Final Notes on Comments
+## Final Notes on Comments
 
 Comments are not only notes.
 
@@ -611,7 +611,7 @@ document your intent,
 and control the audio generation,
 all in the same file.
 
-*Generating Audio
+# Generating Audio
 
 // Mode: Reflective
 
@@ -632,7 +632,7 @@ all the chunks are merged into a single audio file.
 This allows dynamic narration,
 while still producing a clean final output.
 
--From Text to Audio Files
+## From Text to Audio Files
 
 Instead of speaking the text aloud,
 the system can also generate audio files.
@@ -647,7 +647,7 @@ one for each chunk.
 
 These files are then combined into the final chapter file.
 
-:Execution Control
+### Execution Control
 
 The system also supports execution control.
 
@@ -660,7 +660,7 @@ from a specific point in the text.
 
 It is useful when testing or regenerating parts of the audiobook.
 
-:Final Notes
+### Final Notes
 
 The system is intentionally simple.
 

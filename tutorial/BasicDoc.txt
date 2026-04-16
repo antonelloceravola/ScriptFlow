@@ -2,13 +2,13 @@
 // It demonstrates chapters, sections, and subsections
 // using a simple and slightly funny story.
 
-// GenerateChapterAudioFiles: true
+// GenerateChapterAudioFiles: false
 // FinalAudioFormat: acx
 // Language: En2
 
 // The next text is a Chapter (leave an empty line before it)
 
-*The Day Everything Worked
+# The Day Everything Worked
 
 // Mode: Neutral
 
@@ -18,7 +18,7 @@ Everything felt… suspiciously fine.
 
 // This is a section in the Chapter
 
--A Strange Beginning
+## A Strange Beginning
 
 Nobody noticed at first. People walked into the office,
 sat down.
@@ -26,13 +26,13 @@ and started working. No errors. No crashes. No mysterious bugs.
 
 // This is a sub-section in the current section
 
-:Something Feels Wrong
+### Something Feels Wrong
 
 By mid-morning, a strange feeling spread. Someone whispered: “Did anything break today?”. Nobody answered. Because nothing had.
 
 // This is another section in the Chapter
 
--And Then It Happened
+## And Then It Happened
 
 Around eleven, someone tried something risky. They opened a large file. A very large file.
 
@@ -40,7 +40,7 @@ The kind of file that usually causes problems.
 
 // This is a sub-section in the current section
 
-:Expectation
+### Expectation
 
 Everyone waited.
 
@@ -50,13 +50,13 @@ Waiting for the crash, the freeze, the inevitable failure.
 
 // This is another sub-section in the current section
 
-:Reality
+### Reality
 
 But nothing happened. The file opened. Instantly. Perfectly.
 
 // This is a Chapter
 
-*End
+# End
 
 // Mode: Calm
 

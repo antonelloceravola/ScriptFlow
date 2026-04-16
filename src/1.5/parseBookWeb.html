@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audiobook Parser</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --accent: #2563eb;
+      --error: #b91c1c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 320px;
+      resize: vertical;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: Menlo, Consolas, monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      background: #fcfcfd;
+      color: var(--text);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    button {
+      border: none;
+      background: var(--accent);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    label {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .pill {
+      background: #eef2ff;
+      color: #3730a3;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 1px solid #c7d2fe;
+    }
+
+    .log {
+      background: #0b1020;
+      color: #e5e7eb;
+      border-radius: 10px;
+      padding: 14px;
+      min-height: 220px;
+      white-space: pre-wrap;
+      font-family: Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .small-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .chapter { color: #5eead4; }
+    .section { color: #c4b5fd; }
+    .subsection { color: #fdba74; }
+    .text { color: #d1d5db; }
+    .error { color: #fca5a5; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Audiobook Parser</h1>
+    <p class="subtitle">
+      Paste your book text below, then click <strong>Parse</strong>.
+    </p>
+
+    <div class="panel">
+      <textarea id="bookText" placeholder="Paste the full book text here..."></textarea>
+
+      <div class="controls">
+        <button id="parseBtn">Parse</button>
+
+        <div class="checkboxes">
+          <label><input type="checkbox" id="logChapterTitle" checked> LogChapterTitle</label>
+          <label><input type="checkbox" id="logSectionTitle" checked> LogSectionTitle</label>
+          <label><input type="checkbox" id="logSubSectionTitle" checked> LogSubSectionTitle</label>
+          <label><input type="checkbox" id="logTextInitial" checked> LogTextInitial</label>
+          <label><input type="checkbox" id="logTextFull"> LogTextFull</label>
+          <label><input type="checkbox" id="groupParagraphs">GroupConsecutiveTextIntoParagraphs</label>
+        </div>
+      </div>
+
+      <div class="small-note">
+        Conventions: <code>*Title</code> = chapter, <code>-Title</code> = section, <code>:Title</code> = sub-section,
+        with a blank line before and after.
+      </div>
+    </div>
+
+    <div class="panel">
+      <div id="summary" class="summary"></div>
+      <div id="log" class="log"></div>
+    </div>
+  </div>
+
+  <script src="parserLib.js"></script>
+  <script src="config.js"></script>
+  <script>
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderSummary(counts) {
+      const summary = document.getElementById("summary");
+      summary.innerHTML = `
+        <div class="pill">Parsed ${counts.total} items</div>
+        <div class="pill">Chapters: ${counts.chapters}</div>
+        <div class="pill">Sections: ${counts.sections}</div>
+        <div class="pill">Subsections: ${counts.subsections}</div>
+        <div class="pill">Text lines: ${counts.textLines}</div>
+      `;
+    }
+
+    function parseAndRender() {
+      const text = document.getElementById("bookText").value;
+      const summary = document.getElementById("summary");
+      const log = document.getElementById("log");
+
+      if (!text.trim()) {
+        summary.innerHTML = "";
+        log.innerHTML = '<span class="error">Please paste some book text first.</span>';
+        return;
+      }
+
+      const flags = {
+        LogChapterTitle: document.getElementById("logChapterTitle").checked,
+        LogSectionTitle: document.getElementById("logSectionTitle").checked,
+        LogSubSectionTitle: document.getElementById("logSubSectionTitle").checked,
+        LogTextInitial: document.getElementById("logTextInitial").checked,
+        LogTextFull: document.getElementById("logTextFull").checked,
+        GroupConsecutiveTextIntoParagraphs: document.getElementById("groupParagraphs").checked,
+      };
+
+      const lines = [];
+
+      function htmlLogger(type, message) {
+        lines.push(`<span class="${type}">${escapeHtml(message)}</span>`);
+      }
+
+      const result = ParserLib.processBook(text, {
+        flags,
+        logger: htmlLogger,
+      });
+
+      renderSummary(result.counts);
+      log.innerHTML = lines.length > 0
+        ? lines.join("\n")
+        : '<span class="error">No matching output for the current log flags.</span>';
+    }
+
+    document.getElementById("parseBtn").addEventListener("click", parseAndRender);
+
+    document.getElementById("bookText").value = `*Chapter One
+
+This is the first line of text.
+This is the second line of text.
+
+-Section A
+
+This is section text.
+
+:Subsection A1
+
+More detailed text here.
+Another line here.`;
+  </script>
+</body>
+</html>
