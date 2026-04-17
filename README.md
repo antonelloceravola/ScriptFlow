@@ -71,7 +71,7 @@ It introduces a **domain-specific language (DSL)** that lets you:
 ## 🧾 Example
 
 ```text
-// Chapter 1
+// Here starts the Chapter 1
 # The Day Everything Worked
 
 // Mode: Neutral
@@ -80,7 +80,7 @@ It was a normal morning.
 // Pause: 2000
 Something felt different.
 
-// Section of Chapter 1
+// Here a section of Chapter 1
 ## The Twist
 // Mode: Intense
 
