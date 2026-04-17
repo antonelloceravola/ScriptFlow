@@ -40,10 +40,6 @@
     { marker: "# ",   type: "chapter" },
     { marker: "## ",  type: "section" },
     { marker: "### ", type: "subsection" },
-    // legacy syntax, kept for backward compatibility
-    { marker: "*",    type: "chapter" },
-    { marker: "-",    type: "section" },
-    { marker: ":",    type: "subsection" }
   ];
   function isHeadingDetected(lines, index) {
     const line = lines[index].trim();
@@ -59,32 +55,13 @@
 
   function isDelimitedTitle(lines, index, marker) {
     const current = lines[index];
-
-    if (!hasNoSpaceAfterMarker(current, marker)) {
-      return false;
-    }
-
-    // Markdown-like headings: relaxed (no need for blank lines around)
-    if (marker === "#" || marker === "##" || marker === "###") {
-      return true;
-    }
-
-    const prevBlank = index > 0 && isBlank(lines[index - 1]);
-    const nextBlank = index < lines.length - 1 && isBlank(lines[index + 1]);
-
-    return prevBlank && nextBlank;
+    return hasNoSpaceAfterMarker(current, marker);
   }
 
-  // function hasNoSpaceAfterMarker(line, marker) {
-  //   return line.startsWith(marker) && line.length > 1 && line[1] !== " ";
-  // }
   function hasNoSpaceAfterMarker(line, marker) {
     return line.startsWith(marker) && line.length > marker.length && line[marker.length] !== " ";
   }
 
-  // function getTitleText(line) {
-  //   return line.slice(1).trim();
-  // }
   function getTitleText(line, marker) {
     return line.slice(marker.length).trim();
   }
@@ -157,52 +134,8 @@
         }
         continue;
       }
-
-      // // Titles also close an open paragraph block first
-      // if (isDelimitedTitle(lines, i, "*")) {
-      //   if (groupParagraphs) {
-      //     flushParagraphBuffer(items, paragraphBuffer, paragraphStartLine);
-      //     paragraphStartLine = null;
-      //   }
-
-      //   items.push({
-      //     type: "chapter",
-      //     raw: line,
-      //     text: getTitleText(line),
-      //     lineNumber
-      //   });
-      //   continue;
-      // }
-
-      // if (isDelimitedTitle(lines, i, "-")) {
-      //   if (groupParagraphs) {
-      //     flushParagraphBuffer(items, paragraphBuffer, paragraphStartLine);
-      //     paragraphStartLine = null;
-      //   }
-
-      //   items.push({
-      //     type: "section",
-      //     raw: line,
-      //     text: getTitleText(line),
-      //     lineNumber
-      //   });
-      //   continue;
-      // }
-
-      // if (isDelimitedTitle(lines, i, ":")) {
-      //   if (groupParagraphs) {
-      //     flushParagraphBuffer(items, paragraphBuffer, paragraphStartLine);
-      //     paragraphStartLine = null;
-      //   }
-
-      //   items.push({
-      //     type: "subsection",
-      //     raw: line,
-      //     text: getTitleText(line),
-      //     lineNumber
-      //   });
-      //   continue;
-      // }
+      
+      // Check for headings (chapter, section, subsection)
       const heading = isHeadingDetected(lines, i);
       if (heading) {
         if (groupParagraphs) {
