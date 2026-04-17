@@ -1,4 +1,5 @@
 // This file tests dynamic StartAfterLine behavior
+// NOTE: its not possible to jump backwards 
 
 // SpeakText: true
 
