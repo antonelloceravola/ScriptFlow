@@ -71,21 +71,24 @@ It introduces a **domain-specific language (DSL)** that lets you:
 ## 🧾 Example
 
 ```text
+// Chapter 1
 # The Day Everything Worked
 
 // Mode: Neutral
-
 It was a normal morning.
 
-
 // Pause: 2000
-
 Something felt different.
 
-
+// Section of Chapter 1
+## The Twist
 // Mode: Intense
 
 Then everything started moving fast.
+
+# Epilogue
+
+Everyone lived happily ever after
 ```
 
 👉 This produces:
