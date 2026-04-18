@@ -161,7 +161,8 @@ async function mergeAudioFiles(partFiles, outputFile) {
       "-ac", String(FLAGS.FinalAudioChannels || 1),
       "-codec:a", "libmp3lame",
       "-b:a", String(FLAGS.FinalAudioBitrate || "192k"),
-      "-af","adelay=500,loudnorm"
+      //"-af","adelay=500,loudnorm"
+      "-af","loudnorm=I=-20:TP=-3:LRA=7,adelay=500"
     );
   } else {
     ffmpegArgs.push("-c", "copy");
